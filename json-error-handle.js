@@ -25,7 +25,7 @@ function parseJsonAsync(json, callback) {
 function parseJsonAsync2(json, callback) {
   setTimeout(() => {
     try {
-      callback(JSON.parse(json))
+      callback(null, JSON.parse(json))
     } catch (err) {
       callback(err)
     }
@@ -37,4 +37,5 @@ function parseJsonAsync2(json, callback) {
 
 //parseJsonAsync("invalid json desuyo", result => console.log('parse result', result))
 
-parseJsonAsync2("invalid json desuyo", result => console.log('parse result', result))
+parseJsonAsync2("invalid json desuyo", (err, result) => console.log('parse result', err, result))
+parseJsonAsync2('{"key":"value"}', (err, result) => console.log('parse result', err, result))
