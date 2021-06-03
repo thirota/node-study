@@ -60,7 +60,7 @@ function parseJsonAsyncWithCache(json, callback) {
   })
 }
 
-// 修正パターン
+// setTimeout() による修正パターン
 // 常に非同期
 const cache2 = {}
 function parseJsonAsyncWithCache2(json, callback) {
@@ -76,14 +76,30 @@ function parseJsonAsyncWithCache2(json, callback) {
   })
 }
 
+// より良いパターン
+// 常に非同期
+const cache3 = {}
+function parseJsonAsyncWithCache3(json, callback) {
+  const cached = cache3[json]
+  if (cached) {
+    // 非同期にする
+    process.nextTick(() => callback(cached.err, cached.result))
+    return
+  }
+  parseJsonAsync2(json, (err, result) => {
+    cache3[json] = {err, result}
+    callback(err, result)
+  })
+}
+
 
 //1回目
-parseJsonAsyncWithCache2(
+parseJsonAsyncWithCache3(
   '{"message":"hello", "to":"world"}',
   (err, result) => {
     console.log("1回目", err, result)
     //2回目
-    parseJsonAsyncWithCache2(
+    parseJsonAsyncWithCache3(
       '{"message":"hello", "to":"world"}',
       (err, result) => {
         console.log("2回目", err, result)
