@@ -83,7 +83,11 @@ function parseJsonAsyncWithCache3(json, callback) {
   const cached = cache3[json]
   if (cached) {
     // 非同期にする
-    process.nextTick(() => callback(cached.err, cached.result))
+    // for Node.js
+    //process.nextTick(() => callback(cached.err, cached.result))
+    // for Browser
+    //queueMicrotask(() => callback(cached.err, cached.result))
+    Promise.resolve().then(() => callback(cached.err, cached.result))
     return
   }
   parseJsonAsync2(json, (err, result) => {
