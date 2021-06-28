@@ -21,7 +21,7 @@ async function _emitFizzBuzz(eventEmitter, until) {
     }
     count += 1
   }
-  eventEmitter("end")
+  eventEmitter.emit("end")
 }
 
 
