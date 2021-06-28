@@ -2,6 +2,7 @@
 //XXX
 function createFizzBuzzEventEmitter(until) {
   //TODO why events not defined?
+  const events = require('events')
   const eventEmitter = new events.EventEmitter()
   _emitFizzBuzz(eventEmitter, until)
   return eventEmitter
